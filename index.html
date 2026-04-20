@@ -3,10 +3,10 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
-<meta name="description" content="Aria Bloom — Senior Product Designer crafting delightful interfaces for curious humans." />
+<meta name="description" content="Aria Bloom — Senior Product Designer crafting delightful 3D interfaces for curious humans." />
 <meta name="referrer" content="strict-origin-when-cross-origin" />
 <meta http-equiv="X-Content-Type-Options" content="nosniff" />
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data: https://images.unsplash.com; script-src 'self' 'unsafe-inline'; form-action 'none'; frame-ancestors 'none'; base-uri 'self'; object-src 'none'" />
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data: https://images.unsplash.com; script-src 'self' 'unsafe-inline' https://cdnjs.cloudflare.com; connect-src 'self'; form-action 'none'; frame-ancestors 'none'; base-uri 'self'; object-src 'none'" />
 <title>Aria Bloom — UI/UX Designer Portfolio</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -76,21 +76,32 @@
     white-space: nowrap;
   }
   .nav-cta:hover { transform: translateY(-2px); box-shadow: var(--shadow); }
-
   .menu-toggle { display: none; background: transparent; border: none; cursor: pointer; padding: 8px; color: var(--ink); }
   .menu-toggle svg { width: 24px; height: 24px; }
-  .mobile-menu { display: none; }
 
-  /* ======================== HERO ======================== */
-  .hero { padding: 150px 0 90px; position: relative; overflow: hidden; }
+  /* ======================== HERO (with 3D canvas) ======================== */
+  .hero {
+    padding: 150px 0 90px;
+    position: relative;
+    overflow: hidden;
+    min-height: 100vh;
+    display: flex; align-items: center;
+  }
+  .hero-canvas {
+    position: absolute;
+    inset: 0;
+    width: 100%; height: 100%;
+    z-index: 1;
+    pointer-events: none;
+  }
   .blob {
-    position: absolute; border-radius: 50%; filter: blur(80px);
-    opacity: 0.55; z-index: 0;
+    position: absolute; border-radius: 50%; filter: blur(100px);
+    opacity: 0.45; z-index: 0;
     animation: float 14s ease-in-out infinite; will-change: transform;
   }
-  .blob-1 { width: 420px; height: 420px; background: var(--lavender); top: -80px; right: -60px; }
-  .blob-2 { width: 360px; height: 360px; background: var(--peach); bottom: -120px; left: -80px; animation-delay: -4s; }
-  .blob-3 { width: 280px; height: 280px; background: var(--mint); top: 40%; left: 40%; animation-delay: -8s; }
+  .blob-1 { width: 520px; height: 520px; background: var(--lavender); top: -100px; right: -80px; }
+  .blob-2 { width: 420px; height: 420px; background: var(--peach); bottom: -150px; left: -100px; animation-delay: -4s; }
+  .blob-3 { width: 300px; height: 300px; background: var(--mint); top: 40%; left: 45%; animation-delay: -8s; }
   @keyframes float {
     0%, 100% { transform: translate(0,0) scale(1); }
     33% { transform: translate(30px,-20px) scale(1.05); }
@@ -100,13 +111,18 @@
   .hero-grid {
     display: grid; grid-template-columns: 1.3fr 1fr;
     gap: clamp(40px, 6vw, 80px);
-    align-items: center; position: relative; z-index: 1;
+    align-items: center;
+    position: relative;
+    z-index: 3;
+    width: 100%;
   }
+  .hero-text { position: relative; z-index: 3; }
   .eyebrow {
     display: inline-flex; align-items: center; gap: 8px;
     padding: 6px 14px; border-radius: 999px;
     background: rgba(168, 138, 224, 0.15); color: var(--lavender-deep);
     font-size: 13px; font-weight: 600; margin-bottom: 24px;
+    backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);
   }
   .eyebrow::before {
     content: ''; width: 6px; height: 6px; border-radius: 50%;
@@ -118,46 +134,62 @@
   .hero h1 .accent {
     background: linear-gradient(135deg, var(--peach-deep), var(--lavender-deep) 50%, var(--mint-deep));
     -webkit-background-clip: text; background-clip: text; color: transparent;
-    font-style: italic;
+    /* font-style: italic; */
   }
   .hero p.lead { font-size: clamp(16px, 2vw, 19px); color: var(--ink-soft); margin-bottom: 36px; max-width: 520px; }
   .hero-ctas { display: flex; gap: 14px; flex-wrap: wrap; }
   .btn {
     padding: 14px 28px; border-radius: 999px;
     font-weight: 600; font-size: 15px;
-    transition: all 0.25s;
+    transition: all 0.3s cubic-bezier(.2,.8,.2,1);
     display: inline-flex; align-items: center; gap: 8px;
     border: none; cursor: pointer;
+    transform-style: preserve-3d;
   }
   .btn-primary { background: var(--ink); color: var(--paper); }
-  .btn-primary:hover { transform: translateY(-2px); box-shadow: var(--shadow-lift); }
-  .btn-secondary { background: transparent; color: var(--ink); border: 1.5px solid var(--ink); }
-  .btn-secondary:hover { background: var(--ink); color: var(--paper); }
+  .btn-primary:hover { transform: translateY(-3px) translateZ(10px); box-shadow: var(--shadow-lift); }
+  .btn-secondary { background: rgba(255,251,245,0.6); backdrop-filter: blur(8px); color: var(--ink); border: 1.5px solid var(--ink); }
+  .btn-secondary:hover { background: var(--ink); color: var(--paper); transform: translateY(-3px) translateZ(10px); }
 
-  .hero-visual { position: relative; aspect-ratio: 1/1.1; }
-  .card-stack { position: relative; width: 100%; height: 100%; }
-  .stack-card {
-    position: absolute; width: 80%;
-    border-radius: 28px; box-shadow: var(--shadow-lift);
-    transition: transform 0.4s ease;
-    overflow: hidden;
+  /* Hero floating 3D card stack with perspective */
+  .hero-visual {
+    position: relative; aspect-ratio: 1/1.1;
+    perspective: 1400px;
+    z-index: 3;
   }
-  .stack-card-1 { top: 0; left: 0; transform: rotate(-6deg); aspect-ratio: 4/5; }
-  .stack-card-2 { top: 30%; right: 0; transform: rotate(4deg); aspect-ratio: 4/5; }
-  .stack-card-3 { bottom: 0; left: 18%; transform: rotate(-2deg); aspect-ratio: 4/3; width: 70%; }
-  .stack-card:hover { transform: rotate(0) scale(1.04); z-index: 5; }
+  .card-stack { position: relative; width: 100%; height: 100%; transform-style: preserve-3d; }
+  .stack-card {
+    position: absolute; width: 82%;
+    border-radius: 28px; box-shadow: var(--shadow-lift);
+    transition: transform 0.6s cubic-bezier(.2,.8,.2,1);
+    overflow: hidden;
+    transform-style: preserve-3d;
+    will-change: transform;
+  }
+  .stack-card-1 { top: 0; left: 0; transform: rotateY(-14deg) rotateX(6deg) rotate(-6deg) translateZ(30px); aspect-ratio: 4/5; animation: floatCard 6s ease-in-out infinite; }
+  .stack-card-2 { top: 28%; right: 0; transform: rotateY(12deg) rotateX(4deg) rotate(4deg) translateZ(60px); aspect-ratio: 4/5; animation: floatCard 6s ease-in-out infinite 1s; }
+  .stack-card-3 { bottom: 0; left: 16%; transform: rotateY(-6deg) rotateX(-8deg) rotate(-2deg) translateZ(90px); aspect-ratio: 4/3; width: 72%; animation: floatCard 6s ease-in-out infinite 2s; }
+  .stack-card:hover { transform: rotateY(0) rotateX(0) rotate(0) translateZ(140px) scale(1.05); z-index: 5; }
+  @keyframes floatCard {
+    0%, 100% { translate: 0 0; }
+    50% { translate: 0 -14px; }
+  }
   .stack-card img { width: 100%; height: 100%; object-fit: cover; }
   .stack-card .stack-label {
-    position: absolute; bottom: 16px; left: 16px; right: 16px;
-    background: rgba(255,251,245,0.92);
+    position: absolute; bottom: 14px; left: 14px; right: 14px;
+    background: rgba(255,251,245,0.94);
     padding: 10px 14px; border-radius: 14px;
     backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);
+    transform: translateZ(20px);
   }
   .stack-card .stack-label .label {
     font-family: 'Fraunces', serif; font-weight: 600;
     color: var(--ink); font-size: 15px; margin-bottom: 2px;
   }
   .stack-card .stack-label .sub { font-size: 11.5px; color: var(--ink-soft); }
+  @media (prefers-reduced-motion: reduce) {
+    .stack-card { animation: none; }
+  }
 
   /* ======================== MARQUEE ======================== */
   .marquee { background: var(--ink); color: var(--paper); padding: 22px 0; overflow: hidden; position: relative; }
@@ -186,7 +218,7 @@
   .section-header p { color: var(--ink-soft); max-width: 600px; margin: 0 auto; font-size: clamp(15px, 2vw, 17px); }
 
   /* ======================== ABOUT ======================== */
-  .about { background: var(--paper-2); }
+  .about { background: var(--paper-2); perspective: 1400px; }
   .about-grid { display: grid; grid-template-columns: 1fr 1.2fr; gap: clamp(40px, 6vw, 80px); align-items: center; }
   .about-photo {
     aspect-ratio: 4/5;
@@ -195,7 +227,10 @@
     position: relative;
     overflow: hidden;
     background: linear-gradient(135deg, var(--lavender), var(--peach));
+    transform-style: preserve-3d;
+    transition: transform 0.8s cubic-bezier(.2,.8,.2,1);
   }
+  .about-photo:hover { transform: rotateY(-8deg) rotateX(4deg) translateZ(20px); }
   .about-photo img { width: 100%; height: 100%; object-fit: cover; display: block; }
   .about-photo::after {
     content: ''; position: absolute; inset: 0;
@@ -208,7 +243,10 @@
   .stat {
     padding: clamp(16px, 2.5vw, 24px); border-radius: 20px;
     background: white; box-shadow: var(--shadow); text-align: center;
+    transition: transform 0.4s cubic-bezier(.2,.8,.2,1);
+    transform-style: preserve-3d;
   }
+  .stat:hover { transform: translateY(-6px) translateZ(20px) rotateX(6deg); }
   .stat .num {
     font-family: 'Fraunces', serif;
     font-size: clamp(26px, 4vw, 38px); font-weight: 800;
@@ -219,14 +257,21 @@
   .stat .lab { font-size: clamp(11px, 1.6vw, 13px); color: var(--ink-soft); margin-top: 6px; font-weight: 500; }
 
   /* ======================== SKILLS ======================== */
+  .skills-wrap { perspective: 1400px; }
   .skills-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 24px; }
   .skill-card {
+    --rx: 0deg; --ry: 0deg;
     padding: 32px 28px; border-radius: 24px;
     background: white; box-shadow: var(--shadow);
-    transition: transform 0.3s, box-shadow 0.3s;
+    transition: transform 0.2s ease-out, box-shadow 0.4s;
     border: 1px solid rgba(42,36,56,0.04);
+    transform: perspective(1000px) rotateX(var(--rx)) rotateY(var(--ry)) translateZ(0);
+    transform-style: preserve-3d;
   }
-  .skill-card:hover { transform: translateY(-6px); box-shadow: var(--shadow-lift); }
+  .skill-card:hover { box-shadow: var(--shadow-lift); }
+  .skill-card .skill-icon, .skill-card h4, .skill-card p, .skill-card .skill-tags {
+    transform: translateZ(20px);
+  }
   .skill-icon {
     width: 56px; height: 56px; border-radius: 16px;
     display: flex; align-items: center; justify-content: center;
@@ -250,29 +295,35 @@
 
   /* ======================== PROJECTS — BENTO LAYOUT ======================== */
   .projects { background: var(--paper-2); }
+  .bento-wrap { perspective: 1600px; }
   .bento {
     display: grid; grid-template-columns: repeat(12, 1fr);
     grid-auto-rows: 220px; gap: 20px;
   }
   .bento-card {
+    --rx: 0deg; --ry: 0deg; --ty: 0px; --s: 1;
     position: relative; border-radius: 28px; overflow: hidden;
     color: var(--paper); box-shadow: var(--shadow);
-    transition: transform 0.35s cubic-bezier(.2,.8,.2,1), box-shadow 0.35s;
+    transition: transform 0.15s ease-out, box-shadow 0.5s;
     cursor: pointer;
     border: 1px solid rgba(255,255,255,0.4);
+    transform: perspective(1200px) rotateX(var(--rx)) rotateY(var(--ry)) translateY(var(--ty)) scale(var(--s));
+    transform-style: preserve-3d;
   }
-  .bento-card:hover { transform: translateY(-6px) scale(1.01); box-shadow: var(--shadow-lift); }
+  .bento-card:hover { --ty: -6px; --s: 1.01; box-shadow: var(--shadow-lift); }
   .bento-card .bento-img {
     position: absolute; inset: 0;
     width: 100%; height: 100%;
     object-fit: cover;
     z-index: 0;
-    transition: transform 0.6s ease;
+    transition: transform 0.8s ease;
+    transform: translateZ(-20px) scale(1.1);
   }
-  .bento-card:hover .bento-img { transform: scale(1.06); }
+  .bento-card:hover .bento-img { transform: translateZ(-20px) scale(1.15); }
   .bento-card .bento-overlay {
     position: absolute; inset: 0; z-index: 1;
     pointer-events: none;
+    transform: translateZ(0);
   }
   .bento-a .bento-overlay { background: linear-gradient(135deg, rgba(111,203,164,0.55) 0%, rgba(199,230,245,0.55) 100%), linear-gradient(180deg, rgba(42,36,56,0.15) 0%, rgba(42,36,56,0.65) 100%); }
   .bento-b .bento-overlay { background: linear-gradient(135deg, rgba(255,158,122,0.55) 0%, rgba(255,194,212,0.55) 100%), linear-gradient(180deg, rgba(42,36,56,0.1) 0%, rgba(42,36,56,0.6) 100%); }
@@ -287,9 +338,9 @@
     display: flex; flex-direction: column; justify-content: space-between;
     height: 100%;
     color: #fff;
+    transform: translateZ(40px);
   }
 
-  /* sizes */
   .bento-a { grid-column: span 7; grid-row: span 2; }
   .bento-b { grid-column: span 5; grid-row: span 1; }
   .bento-c { grid-column: span 5; grid-row: span 1; }
@@ -333,13 +384,14 @@
     display: flex; align-items: center; justify-content: center;
     font-size: 16px; color: var(--ink);
     transition: transform 0.3s, background 0.3s;
+    transform: translateZ(50px);
   }
-  .bento-card:hover .bento-arrow { background: var(--ink); color: var(--paper); transform: rotate(-45deg); }
-
+  .bento-card:hover .bento-arrow { background: var(--ink); color: var(--paper); transform: translateZ(50px) rotate(-45deg); }
   .bento-a .bento-title { font-size: clamp(22px, 3.4vw, 32px); }
   .bento-a .bento-desc { font-size: 14.5px; max-width: 85%; }
 
   /* ======================== EXPERIENCE TIMELINE ======================== */
+  .timeline-wrap { perspective: 1400px; }
   .timeline { position: relative; max-width: 800px; margin: 0 auto; }
   .timeline::before {
     content: ''; position: absolute;
@@ -348,44 +400,52 @@
     background: linear-gradient(to bottom, var(--peach-deep), var(--lavender-deep), var(--mint-deep));
     border-radius: 999px;
   }
-  .timeline-item { position: relative; width: 50%; padding: 0 40px 50px; }
+  .timeline-item { position: relative; width: 50%; padding: 0 40px 50px; transform-style: preserve-3d; }
   .timeline-item:nth-child(odd) { left: 0; text-align: right; }
   .timeline-item:nth-child(even) { left: 50%; }
   .timeline-dot {
     position: absolute; width: 18px; height: 18px; border-radius: 50%;
     background: white; border: 3px solid var(--lavender-deep);
     top: 24px; box-shadow: 0 0 0 6px var(--paper);
+    transform: translateZ(20px);
   }
   .timeline-item:nth-child(odd) .timeline-dot { right: -9px; }
   .timeline-item:nth-child(even) .timeline-dot { left: -9px; }
   .timeline-card {
     background: white; padding: 24px 28px; border-radius: 20px;
-    box-shadow: var(--shadow); transition: transform 0.25s;
+    box-shadow: var(--shadow); transition: transform 0.5s cubic-bezier(.2,.8,.2,1);
+    transform-style: preserve-3d;
   }
-  .timeline-card:hover { transform: scale(1.02); }
+  .timeline-item:nth-child(odd) .timeline-card:hover { transform: translateZ(30px) rotateY(-6deg); }
+  .timeline-item:nth-child(even) .timeline-card:hover { transform: translateZ(30px) rotateY(6deg); }
   .timeline-date { font-size: 13px; font-weight: 600; color: var(--peach-deep); margin-bottom: 6px; }
   .timeline-card h4 { font-family: 'Fraunces', serif; font-size: 20px; margin-bottom: 4px; font-weight: 600; }
   .timeline-card .company { font-size: 14px; color: var(--ink-soft); margin-bottom: 10px; }
   .timeline-card p { font-size: 14px; color: var(--ink-soft); }
 
   /* ======================== TESTIMONIALS ======================== */
-  .testimonials { background: var(--paper-2); }
+  .testimonials { background: var(--paper-2); perspective: 1400px; }
   .testimonial-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
   .testimonial-card {
     padding: 36px 32px; border-radius: 24px;
     background: white; box-shadow: var(--shadow); position: relative;
+    transition: transform 0.5s cubic-bezier(.2,.8,.2,1), box-shadow 0.5s;
+    transform-style: preserve-3d;
   }
+  .testimonial-card:hover { transform: translateY(-8px) translateZ(30px) rotateX(4deg); box-shadow: var(--shadow-lift); }
   .testimonial-card::before {
     content: '"'; position: absolute; top: -10px; left: 24px;
     font-family: 'Fraunces', serif; font-size: 90px;
     color: var(--peach-deep); line-height: 1; opacity: 0.4;
+    transform: translateZ(30px);
   }
   .testimonial-card p.quote {
     font-family: 'Fraunces', serif;
     font-size: 17px; line-height: 1.5;
     margin-bottom: 22px; color: var(--ink); position: relative;
+    transform: translateZ(20px);
   }
-  .testimonial-author { display: flex; align-items: center; gap: 14px; }
+  .testimonial-author { display: flex; align-items: center; gap: 14px; transform: translateZ(20px); }
   .avatar {
     width: 48px; height: 48px; border-radius: 50%;
     overflow: hidden; flex-shrink: 0;
@@ -401,16 +461,23 @@
     border-radius: 40px; padding: clamp(40px, 6vw, 80px) clamp(24px, 5vw, 60px);
     text-align: center; position: relative; overflow: hidden;
     box-shadow: var(--shadow-lift);
+    transform-style: preserve-3d;
   }
   .contact-card::before {
     content: '✦'; position: absolute;
     top: 40px; left: 60px; font-size: 40px;
     color: white; opacity: 0.5;
+    animation: spin 20s linear infinite;
   }
   .contact-card::after {
     content: '✦'; position: absolute;
     bottom: 40px; right: 60px; font-size: 40px;
     color: white; opacity: 0.5;
+    animation: spin 25s linear infinite reverse;
+  }
+  @keyframes spin { to { transform: rotate(360deg); } }
+  @media (prefers-reduced-motion: reduce) {
+    .contact-card::before, .contact-card::after { animation: none; }
   }
   .contact-card h2 { font-size: clamp(32px, 6vw, 64px); font-weight: 800; margin-bottom: 20px; }
   .contact-card > p { font-size: clamp(16px, 2vw, 19px); color: var(--ink-soft); max-width: 500px; margin: 0 auto 36px; }
@@ -429,20 +496,20 @@
     backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
     font-family: inherit; font-size: 15px;
     color: var(--ink); outline: none;
-    transition: background 0.2s, border-color 0.2s;
+    transition: background 0.2s, border-color 0.2s, transform 0.2s;
     width: 100%;
   }
+  .contact-form input:focus, .contact-form textarea:focus { background: white; border-color: var(--lavender-deep); transform: translateZ(10px); }
   .contact-form textarea { border-radius: 24px; resize: vertical; min-height: 120px; }
-  .contact-form input:focus, .contact-form textarea:focus { background: white; border-color: var(--lavender-deep); }
   .contact-form input:invalid:not(:placeholder-shown),
   .contact-form textarea:invalid:not(:placeholder-shown) { border-color: var(--peach-deep); }
   .contact-form button {
     padding: 16px; border-radius: 999px;
     background: var(--ink); color: var(--paper);
     border: none; font-weight: 600; font-size: 15px;
-    cursor: pointer; transition: transform 0.2s, opacity 0.2s;
+    cursor: pointer; transition: transform 0.3s cubic-bezier(.2,.8,.2,1), opacity 0.2s, box-shadow 0.3s;
   }
-  .contact-form button:hover { transform: translateY(-2px); }
+  .contact-form button:hover { transform: translateY(-3px) translateZ(15px); box-shadow: var(--shadow-lift); }
   .contact-form button:disabled { opacity: 0.7; cursor: not-allowed; transform: none; }
   .form-status { font-size: 14px; text-align: center; min-height: 20px; color: var(--ink-soft); }
   .form-status.success { color: var(--mint-deep); font-weight: 600; }
@@ -453,15 +520,16 @@
     width: 44px; height: 44px; border-radius: 50%;
     background: rgba(255,255,255,0.6);
     display: flex; align-items: center; justify-content: center;
-    transition: transform 0.2s, background 0.2s;
+    transition: transform 0.3s cubic-bezier(.2,.8,.2,1), background 0.2s;
     color: var(--ink);
   }
   .social-link svg { width: 20px; height: 20px; }
-  .social-link:hover { transform: translateY(-3px); background: white; }
+  .social-link:hover { transform: translateY(-5px) translateZ(20px) rotate(-6deg); background: white; }
 
   /* ======================== FOOTER ======================== */
   footer { padding: 50px 0 40px; text-align: center; color: var(--ink-soft); font-size: 14px; }
-  footer .heart { color: var(--peach-deep); }
+  footer .heart { color: var(--peach-deep); display: inline-block; animation: heartBeat 1.5s ease-in-out infinite; }
+  @keyframes heartBeat { 0%,100%{transform:scale(1);} 50%{transform:scale(1.2);} }
 
   /* ======================== RESPONSIVE ======================== */
   @media (max-width: 1024px) {
@@ -487,7 +555,7 @@
     .mobile-menu.open { display: flex; }
     .mobile-menu a { font-size: 18px; font-weight: 500; padding: 8px 0; color: var(--ink); }
 
-    .hero { padding: 120px 0 70px; }
+    .hero { padding: 120px 0 70px; min-height: auto; }
     .hero-grid { grid-template-columns: 1fr; gap: 50px; }
     .hero-visual { max-width: 360px; margin: 0 auto; width: 100%; }
     .hero-ctas .btn { flex: 1; justify-content: center; min-width: 140px; }
@@ -524,15 +592,24 @@
     .testimonial-card { padding: 30px 24px; }
   }
 
-  .reveal { opacity: 0; transform: translateY(30px); transition: opacity 0.8s ease, transform 0.8s ease; }
+  /* Touch devices — disable hover 3D tilt for consistent feel */
+  @media (hover: none) {
+    .bento-card, .skill-card, .testimonial-card, .stat, .about-photo { transform: none !important; }
+    .stack-card:hover { transform: rotateY(-14deg) rotateX(6deg) rotate(-6deg) translateZ(30px); }
+  }
+
+  /* Scroll reveal */
+  .reveal { opacity: 0; transform: translateY(30px); transition: opacity 0.9s ease, transform 0.9s ease; }
   .reveal.visible { opacity: 1; transform: translateY(0); }
   @media (prefers-reduced-motion: reduce) {
     .reveal { opacity: 1; transform: none; transition: none; }
   }
-
-  /* Fallback: if JS fails or CSP blocks, reveal after 1.5s via CSS-only */
   @keyframes autoReveal { to { opacity: 1; transform: translateY(0); } }
   .reveal { animation: autoReveal 0.8s ease 1.5s forwards; }
+
+  /* 3D loading fade for hero canvas */
+  .hero-canvas { opacity: 0; transition: opacity 1.2s ease; }
+  .hero-canvas.loaded { opacity: 1; }
 </style>
 </head>
 <body>
@@ -565,14 +642,15 @@
   </div>
 </nav>
 
-<!-- HERO -->
+<!-- HERO WITH 3D SCENE -->
 <header class="hero" id="top">
   <div class="blob blob-1" aria-hidden="true"></div>
   <div class="blob blob-2" aria-hidden="true"></div>
   <div class="blob blob-3" aria-hidden="true"></div>
+  <canvas class="hero-canvas" id="heroCanvas" aria-hidden="true"></canvas>
   <div class="container">
     <div class="hero-grid">
-      <div>
+      <div class="hero-text">
         <span class="eyebrow">Available for new projects · Spring 2026</span>
         <h1>Designing <span class="accent">delightful</span> experiences for curious humans.</h1>
         <p class="lead">I'm Aria — a senior product designer crafting interfaces that feel intuitive, joyful, and a little bit magical. Currently designing for fintech and creator tools.</p>
@@ -649,149 +727,151 @@
       <h2 id="skills-heading">Skills &amp; toolbelt</h2>
       <p>A blend of craft, strategy, and curiosity — wielded across the entire product lifecycle.</p>
     </div>
-    <div class="skills-grid">
-      <div class="skill-card reveal">
-        <div class="skill-icon icon-peach" aria-hidden="true">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 1 1 3 3L7 19l-4 1 1-4Z"/></svg>
+    <div class="skills-wrap">
+      <div class="skills-grid">
+        <div class="skill-card reveal" data-tilt>
+          <div class="skill-icon icon-peach" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 1 1 3 3L7 19l-4 1 1-4Z"/></svg>
+          </div>
+          <h4>UI Design</h4>
+          <p>Pixel-perfect interfaces with thoughtful detail and a focus on accessibility.</p>
+          <div class="skill-tags"><span class="skill-tag">Figma</span><span class="skill-tag">Sketch</span></div>
         </div>
-        <h4>UI Design</h4>
-        <p>Pixel-perfect interfaces with thoughtful detail and a focus on accessibility.</p>
-        <div class="skill-tags"><span class="skill-tag">Figma</span><span class="skill-tag">Sketch</span></div>
-      </div>
-      <div class="skill-card reveal">
-        <div class="skill-icon icon-lavender" aria-hidden="true">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+        <div class="skill-card reveal" data-tilt>
+          <div class="skill-icon icon-lavender" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+          </div>
+          <h4>UX Research</h4>
+          <p>User interviews, usability testing, and data-driven discovery to find the right problem.</p>
+          <div class="skill-tags"><span class="skill-tag">Maze</span><span class="skill-tag">Dovetail</span></div>
         </div>
-        <h4>UX Research</h4>
-        <p>User interviews, usability testing, and data-driven discovery to find the right problem.</p>
-        <div class="skill-tags"><span class="skill-tag">Maze</span><span class="skill-tag">Dovetail</span></div>
-      </div>
-      <div class="skill-card reveal">
-        <div class="skill-icon icon-mint" aria-hidden="true">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
+        <div class="skill-card reveal" data-tilt>
+          <div class="skill-icon icon-mint" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
+          </div>
+          <h4>Design Systems</h4>
+          <p>Scalable component libraries, design tokens, and clear documentation.</p>
+          <div class="skill-tags"><span class="skill-tag">Storybook</span><span class="skill-tag">Tokens Studio</span></div>
         </div>
-        <h4>Design Systems</h4>
-        <p>Scalable component libraries, design tokens, and clear documentation.</p>
-        <div class="skill-tags"><span class="skill-tag">Storybook</span><span class="skill-tag">Tokens Studio</span></div>
-      </div>
-      <div class="skill-card reveal">
-        <div class="skill-icon icon-butter" aria-hidden="true">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+        <div class="skill-card reveal" data-tilt>
+          <div class="skill-icon icon-butter" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+          </div>
+          <h4>Prototyping</h4>
+          <p>Interactive prototypes and motion that bring ideas to life before a single line of code.</p>
+          <div class="skill-tags"><span class="skill-tag">Framer</span><span class="skill-tag">ProtoPie</span></div>
         </div>
-        <h4>Prototyping</h4>
-        <p>Interactive prototypes and motion that bring ideas to life before a single line of code.</p>
-        <div class="skill-tags"><span class="skill-tag">Framer</span><span class="skill-tag">ProtoPie</span></div>
-      </div>
-      <div class="skill-card reveal">
-        <div class="skill-icon icon-sky" aria-hidden="true">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+        <div class="skill-card reveal" data-tilt>
+          <div class="skill-icon icon-sky" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+          </div>
+          <h4>Motion Design</h4>
+          <p>Subtle micro-interactions and transitions that make products feel alive.</p>
+          <div class="skill-tags"><span class="skill-tag">After Effects</span><span class="skill-tag">Lottie</span></div>
         </div>
-        <h4>Motion Design</h4>
-        <p>Subtle micro-interactions and transitions that make products feel alive.</p>
-        <div class="skill-tags"><span class="skill-tag">After Effects</span><span class="skill-tag">Lottie</span></div>
-      </div>
-      <div class="skill-card reveal">
-        <div class="skill-icon icon-rose" aria-hidden="true">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+        <div class="skill-card reveal" data-tilt>
+          <div class="skill-icon icon-rose" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+          </div>
+          <h4>Brand &amp; Identity</h4>
+          <p>Visual identity systems, logo design, and brand expression across digital touchpoints.</p>
+          <div class="skill-tags"><span class="skill-tag">Illustrator</span><span class="skill-tag">Photoshop</span></div>
         </div>
-        <h4>Brand &amp; Identity</h4>
-        <p>Visual identity systems, logo design, and brand expression across digital touchpoints.</p>
-        <div class="skill-tags"><span class="skill-tag">Illustrator</span><span class="skill-tag">Photoshop</span></div>
       </div>
     </div>
   </div>
 </section>
 
-<!-- PROJECTS — BENTO GRID -->
+<!-- PROJECTS — BENTO GRID with 3D tilt -->
 <section class="projects" id="work" aria-labelledby="work-heading">
   <div class="container">
     <div class="section-header reveal">
       <span class="eyebrow">Selected work</span>
       <h2 id="work-heading">Projects I'm proud of</h2>
-      <p>A curated bento of recent collaborations across fintech, wellness, creator tools, and beyond.</p>
+      <p>A curated bento of recent collaborations — move your cursor across the cards for a bit of 3D magic.</p>
     </div>
-    <div class="bento">
-      <article class="bento-card bento-a reveal" tabindex="0" role="link" aria-label="Coral Bank payments dashboard case study">
-        <img class="bento-img" src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=1000&q=80&auto=format&fit=crop" alt="Laptop displaying a financial dashboard" loading="lazy" referrerpolicy="no-referrer" />
-        <div class="bento-overlay" aria-hidden="true"></div>
-        <div class="bento-arrow" aria-hidden="true">↗</div>
-        <div class="bento-content">
-          <div class="bento-top">
-            <div class="bento-index">01 — Featured</div>
+    <div class="bento-wrap">
+      <div class="bento">
+        <article class="bento-card bento-a reveal" tabindex="0" role="link" aria-label="Coral Bank payments dashboard case study" data-tilt>
+          <img class="bento-img" src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=1000&q=80&auto=format&fit=crop" alt="Laptop displaying a financial dashboard" loading="lazy" referrerpolicy="no-referrer" />
+          <div class="bento-overlay" aria-hidden="true"></div>
+          <div class="bento-arrow" aria-hidden="true">↗</div>
+          <div class="bento-content">
+            <div class="bento-top"><div class="bento-index">01 — Featured</div></div>
+            <div class="bento-bottom">
+              <div class="bento-tags"><span class="bento-tag">Fintech</span><span class="bento-tag">Web App</span><span class="bento-tag">Design System</span></div>
+              <div class="bento-title">Coral Bank — payments dashboard</div>
+              <div class="bento-desc">Designed an SMB payments platform with a modular, accessible component library now used by 12k+ businesses across 8 markets.</div>
+            </div>
           </div>
-          <div class="bento-bottom">
-            <div class="bento-tags"><span class="bento-tag">Fintech</span><span class="bento-tag">Web App</span><span class="bento-tag">Design System</span></div>
-            <div class="bento-title">Coral Bank — payments dashboard</div>
-            <div class="bento-desc">Designed an SMB payments platform with a modular, accessible component library now used by 12k+ businesses across 8 markets.</div>
-          </div>
-        </div>
-      </article>
+        </article>
 
-      <article class="bento-card bento-b reveal" tabindex="0" role="link" aria-label="Sprout habit tracker case study">
-        <img class="bento-img" src="https://images.unsplash.com/photo-1459411552884-841db9b3cc2a?w=800&q=80&auto=format&fit=crop" alt="Fresh green plant sprouts" loading="lazy" referrerpolicy="no-referrer" />
-        <div class="bento-overlay" aria-hidden="true"></div>
-        <div class="bento-arrow" aria-hidden="true">↗</div>
-        <div class="bento-content">
-          <div class="bento-top"><div class="bento-index">02</div></div>
-          <div class="bento-bottom">
-            <div class="bento-title">Sprout — habit tracker</div>
-            <div class="bento-desc">Gentle nudges that grew DAU by 38%.</div>
+        <article class="bento-card bento-b reveal" tabindex="0" role="link" aria-label="Sprout habit tracker case study" data-tilt>
+          <img class="bento-img" src="https://images.unsplash.com/photo-1459411552884-841db9b3cc2a?w=800&q=80&auto=format&fit=crop" alt="Fresh green plant sprouts" loading="lazy" referrerpolicy="no-referrer" />
+          <div class="bento-overlay" aria-hidden="true"></div>
+          <div class="bento-arrow" aria-hidden="true">↗</div>
+          <div class="bento-content">
+            <div class="bento-top"><div class="bento-index">02</div></div>
+            <div class="bento-bottom">
+              <div class="bento-title">Sprout — habit tracker</div>
+              <div class="bento-desc">Gentle nudges that grew DAU by 38%.</div>
+            </div>
           </div>
-        </div>
-      </article>
+        </article>
 
-      <article class="bento-card bento-c reveal" tabindex="0" role="link" aria-label="Palette color tool case study">
-        <img class="bento-img" src="https://images.unsplash.com/photo-1513151233558-d860c5398176?w=800&q=80&auto=format&fit=crop" alt="Artist paint palette with colorful paints" loading="lazy" referrerpolicy="no-referrer" />
-        <div class="bento-overlay" aria-hidden="true"></div>
-        <div class="bento-arrow" aria-hidden="true">↗</div>
-        <div class="bento-content">
-          <div class="bento-top"><div class="bento-index">03</div></div>
-          <div class="bento-bottom">
-            <div class="bento-title">Palette — color tool</div>
-            <div class="bento-desc">Brand &amp; product for an indie accessibility tool.</div>
+        <article class="bento-card bento-c reveal" tabindex="0" role="link" aria-label="Palette color tool case study" data-tilt>
+          <img class="bento-img" src="https://images.unsplash.com/photo-1513151233558-d860c5398176?w=800&q=80&auto=format&fit=crop" alt="Artist paint palette with colorful paints" loading="lazy" referrerpolicy="no-referrer" />
+          <div class="bento-overlay" aria-hidden="true"></div>
+          <div class="bento-arrow" aria-hidden="true">↗</div>
+          <div class="bento-content">
+            <div class="bento-top"><div class="bento-index">03</div></div>
+            <div class="bento-bottom">
+              <div class="bento-title">Palette — color tool</div>
+              <div class="bento-desc">Brand &amp; product for an indie accessibility tool.</div>
+            </div>
           </div>
-        </div>
-      </article>
+        </article>
 
-      <article class="bento-card bento-d reveal" tabindex="0" role="link" aria-label="Lumi Learning onboarding redesign case study">
-        <img class="bento-img" src="https://images.unsplash.com/photo-1481627834876-b7833e8f5570?w=800&q=80&auto=format&fit=crop" alt="Stack of open books on a wooden desk" loading="lazy" referrerpolicy="no-referrer" />
-        <div class="bento-overlay" aria-hidden="true"></div>
-        <div class="bento-arrow" aria-hidden="true">↗</div>
-        <div class="bento-content">
-          <div class="bento-top"><div class="bento-index">04</div></div>
-          <div class="bento-bottom">
-            <div class="bento-tags"><span class="bento-tag">EdTech</span><span class="bento-tag">Research</span></div>
-            <div class="bento-title">Lumi — onboarding redesign</div>
-            <div class="bento-desc">Led research and design of a new onboarding flow that lifted week-1 retention by 24%.</div>
+        <article class="bento-card bento-d reveal" tabindex="0" role="link" aria-label="Lumi Learning onboarding redesign case study" data-tilt>
+          <img class="bento-img" src="https://images.unsplash.com/photo-1481627834876-b7833e8f5570?w=800&q=80&auto=format&fit=crop" alt="Stack of open books on a wooden desk" loading="lazy" referrerpolicy="no-referrer" />
+          <div class="bento-overlay" aria-hidden="true"></div>
+          <div class="bento-arrow" aria-hidden="true">↗</div>
+          <div class="bento-content">
+            <div class="bento-top"><div class="bento-index">04</div></div>
+            <div class="bento-bottom">
+              <div class="bento-tags"><span class="bento-tag">EdTech</span><span class="bento-tag">Research</span></div>
+              <div class="bento-title">Lumi — onboarding redesign</div>
+              <div class="bento-desc">Led research and design of a new onboarding flow that lifted week-1 retention by 24%.</div>
+            </div>
           </div>
-        </div>
-      </article>
+        </article>
 
-      <article class="bento-card bento-e reveal" tabindex="0" role="link" aria-label="Mira and Co design system case study">
-        <img class="bento-img" src="https://images.unsplash.com/photo-1607082348824-0a96f2a4b9da?w=800&q=80&auto=format&fit=crop" alt="Pastel shopping bags on a soft background" loading="lazy" referrerpolicy="no-referrer" />
-        <div class="bento-overlay" aria-hidden="true"></div>
-        <div class="bento-arrow" aria-hidden="true">↗</div>
-        <div class="bento-content">
-          <div class="bento-top"><div class="bento-index">05</div></div>
-          <div class="bento-bottom">
-            <div class="bento-title">Mira &amp; Co. — system</div>
-            <div class="bento-desc">6 storefronts, 200+ components.</div>
+        <article class="bento-card bento-e reveal" tabindex="0" role="link" aria-label="Mira and Co design system case study" data-tilt>
+          <img class="bento-img" src="https://images.unsplash.com/photo-1607082348824-0a96f2a4b9da?w=800&q=80&auto=format&fit=crop" alt="Pastel shopping bags on a soft background" loading="lazy" referrerpolicy="no-referrer" />
+          <div class="bento-overlay" aria-hidden="true"></div>
+          <div class="bento-arrow" aria-hidden="true">↗</div>
+          <div class="bento-content">
+            <div class="bento-top"><div class="bento-index">05</div></div>
+            <div class="bento-bottom">
+              <div class="bento-title">Mira &amp; Co. — system</div>
+              <div class="bento-desc">6 storefronts, 200+ components.</div>
+            </div>
           </div>
-        </div>
-      </article>
+        </article>
 
-      <article class="bento-card bento-f reveal" tabindex="0" role="link" aria-label="Hum meditation player case study">
-        <img class="bento-img" src="https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=800&q=80&auto=format&fit=crop" alt="Soft pastel headphones on a calm surface" loading="lazy" referrerpolicy="no-referrer" />
-        <div class="bento-overlay" aria-hidden="true"></div>
-        <div class="bento-arrow" aria-hidden="true">↗</div>
-        <div class="bento-content">
-          <div class="bento-top"><div class="bento-index">06</div></div>
-          <div class="bento-bottom">
-            <div class="bento-title">Hum — meditation player</div>
-            <div class="bento-desc">Soft motion, tactile feedback.</div>
+        <article class="bento-card bento-f reveal" tabindex="0" role="link" aria-label="Hum meditation player case study" data-tilt>
+          <img class="bento-img" src="https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=800&q=80&auto=format&fit=crop" alt="Soft pastel headphones on a calm surface" loading="lazy" referrerpolicy="no-referrer" />
+          <div class="bento-overlay" aria-hidden="true"></div>
+          <div class="bento-arrow" aria-hidden="true">↗</div>
+          <div class="bento-content">
+            <div class="bento-top"><div class="bento-index">06</div></div>
+            <div class="bento-bottom">
+              <div class="bento-title">Hum — meditation player</div>
+              <div class="bento-desc">Soft motion, tactile feedback.</div>
+            </div>
           </div>
-        </div>
-      </article>
+        </article>
+      </div>
     </div>
   </div>
 </section>
@@ -804,41 +884,43 @@
       <h2 id="exp-heading">Experience</h2>
       <p>A path through agencies, startups, and a brief detour into freelance bliss.</p>
     </div>
-    <div class="timeline">
-      <div class="timeline-item reveal">
-        <div class="timeline-dot" aria-hidden="true"></div>
-        <div class="timeline-card">
-          <div class="timeline-date">2023 — Present</div>
-          <h4>Senior Product Designer</h4>
-          <div class="company">Coral Financial · Remote</div>
-          <p>Leading design for the SMB payments platform. Established a unified design system and mentor 3 junior designers.</p>
+    <div class="timeline-wrap">
+      <div class="timeline">
+        <div class="timeline-item reveal">
+          <div class="timeline-dot" aria-hidden="true"></div>
+          <div class="timeline-card">
+            <div class="timeline-date">2023 — Present</div>
+            <h4>Senior Product Designer</h4>
+            <div class="company">Coral Financial · Remote</div>
+            <p>Leading design for the SMB payments platform. Established a unified design system and mentor 3 junior designers.</p>
+          </div>
         </div>
-      </div>
-      <div class="timeline-item reveal">
-        <div class="timeline-dot" aria-hidden="true"></div>
-        <div class="timeline-card">
-          <div class="timeline-date">2021 — 2023</div>
-          <h4>Product Designer</h4>
-          <div class="company">Lumi Learning · Berlin</div>
-          <p>Owned the learner experience across web and mobile. Shipped a complete onboarding redesign that lifted retention 24%.</p>
+        <div class="timeline-item reveal">
+          <div class="timeline-dot" aria-hidden="true"></div>
+          <div class="timeline-card">
+            <div class="timeline-date">2021 — 2023</div>
+            <h4>Product Designer</h4>
+            <div class="company">Lumi Learning · Berlin</div>
+            <p>Owned the learner experience across web and mobile. Shipped a complete onboarding redesign that lifted retention 24%.</p>
+          </div>
         </div>
-      </div>
-      <div class="timeline-item reveal">
-        <div class="timeline-dot" aria-hidden="true"></div>
-        <div class="timeline-card">
-          <div class="timeline-date">2019 — 2021</div>
-          <h4>Independent Designer</h4>
-          <div class="company">Freelance · Worldwide</div>
-          <p>Partnered with 14 startups on brand and product work. Discovered a love for design systems and motion.</p>
+        <div class="timeline-item reveal">
+          <div class="timeline-dot" aria-hidden="true"></div>
+          <div class="timeline-card">
+            <div class="timeline-date">2019 — 2021</div>
+            <h4>Independent Designer</h4>
+            <div class="company">Freelance · Worldwide</div>
+            <p>Partnered with 14 startups on brand and product work. Discovered a love for design systems and motion.</p>
+          </div>
         </div>
-      </div>
-      <div class="timeline-item reveal">
-        <div class="timeline-dot" aria-hidden="true"></div>
-        <div class="timeline-card">
-          <div class="timeline-date">2017 — 2019</div>
-          <h4>Junior Designer</h4>
-          <div class="company">Studio Marigold · London</div>
-          <p>Cut my teeth on agency life — branding, packaging, and the occasional pixel-pushing session at 11pm.</p>
+        <div class="timeline-item reveal">
+          <div class="timeline-dot" aria-hidden="true"></div>
+          <div class="timeline-card">
+            <div class="timeline-date">2017 — 2019</div>
+            <h4>Junior Designer</h4>
+            <div class="company">Studio Marigold · London</div>
+            <p>Cut my teeth on agency life — branding, packaging, and the occasional pixel-pushing session at 11pm.</p>
+          </div>
         </div>
       </div>
     </div>
@@ -851,7 +933,7 @@
     <div class="section-header reveal">
       <span class="eyebrow">Kind words</span>
       <h2 id="test-heading">What clients say</h2>
-      <p>Working with thoughtful humans is the best part of the job. Here's what a few of them had to say.</p>
+      <p>Working with thoughtful humans is the best part of the job.</p>
     </div>
     <div class="testimonial-grid">
       <div class="testimonial-card reveal">
@@ -919,35 +1001,212 @@
 
 <footer>
   <div class="container">
-    Designed &amp; built with <span class="heart" aria-hidden="true">♥</span> by Aria Bloom · © 2026
+    Designed &amp; built with <span class="heart" aria-hidden="true">♥</span> by <a href="https://saturnitsolution.com/">saturn IT solution</a> © 2026
   </div>
 </footer>
+
+<!-- Three.js for 3D hero scene -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 
 <script>
 (function() {
   'use strict';
 
-  // ---------------- Scroll reveal (enhances CSS fallback) ----------------
-  if ('IntersectionObserver' in window) {
-    var els = document.querySelectorAll('.reveal');
-    // Cancel CSS auto-reveal since JS will handle it precisely
-    els.forEach(function(el){ el.style.animation = 'none'; });
+  var reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var hoverCapable = window.matchMedia('(hover: hover)').matches;
 
-    var observer = new IntersectionObserver(function(entries) {
-      entries.forEach(function(entry) {
-        if (entry.isIntersecting) {
-          entry.target.classList.add('visible');
-          observer.unobserve(entry.target);
-        }
+  // ====================== 3D HERO SCENE ======================
+  function initHeroScene() {
+    var canvas = document.getElementById('heroCanvas');
+    if (!canvas || typeof THREE === 'undefined') return;
+
+    var parent = canvas.parentElement;
+    var width = parent.clientWidth;
+    var height = parent.clientHeight;
+    var isMobile = width < 768;
+
+    var scene = new THREE.Scene();
+    var camera = new THREE.PerspectiveCamera(55, width / height, 0.1, 100);
+    camera.position.set(0, 0, 10);
+
+    var renderer;
+    try {
+      renderer = new THREE.WebGLRenderer({ canvas: canvas, antialias: true, alpha: true, powerPreference: 'low-power' });
+    } catch (err) { return; }
+    renderer.setSize(width, height, false);
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, isMobile ? 1.5 : 2));
+    renderer.setClearColor(0x000000, 0);
+
+    // Soft multi-directional lighting
+    scene.add(new THREE.AmbientLight(0xffffff, 0.55));
+    var l1 = new THREE.DirectionalLight(0xffd7c2, 0.9);
+    l1.position.set(4, 5, 6);
+    scene.add(l1);
+    var l2 = new THREE.DirectionalLight(0xd8c5f2, 0.7);
+    l2.position.set(-6, -3, 4);
+    scene.add(l2);
+    var l3 = new THREE.PointLight(0xb8e6d2, 0.8, 25);
+    l3.position.set(0, 2, 6);
+    scene.add(l3);
+
+    // Pastel palette
+    var palette = [0x6FCBA4, 0xFF9E7A, 0xA98AE0, 0xFFE9B0, 0xC7E6F5, 0xFFC2D4];
+
+    // Geometries (reusing instances for perf)
+    var geoms = [
+      new THREE.IcosahedronGeometry(0.95, 0),
+      new THREE.TorusGeometry(0.75, 0.28, 24, 64),
+      new THREE.OctahedronGeometry(0.95, 0),
+      new THREE.TorusKnotGeometry(0.5, 0.18, 96, 16),
+      new THREE.DodecahedronGeometry(0.85, 0),
+      new THREE.SphereGeometry(0.75, 48, 48)
+    ];
+
+    var shapeCount = isMobile ? 5 : 9;
+    var shapes = [];
+
+    for (var i = 0; i < shapeCount; i++) {
+      var geo = geoms[i % geoms.length];
+      var mat = new THREE.MeshPhongMaterial({
+        color: palette[i % palette.length],
+        shininess: 40,
+        flatShading: i % 2 === 0,
+        specular: 0x333333
       });
-    }, { threshold: 0.12 });
-    els.forEach(function(el) { observer.observe(el); });
+      var mesh = new THREE.Mesh(geo, mat);
+      var r = 4 + Math.random() * 3;
+      var theta = (i / shapeCount) * Math.PI * 2 + Math.random() * 0.6;
+      mesh.position.x = Math.cos(theta) * r;
+      mesh.position.y = Math.sin(theta) * r * 0.55;
+      mesh.position.z = -1 - Math.random() * 4;
+      mesh.rotation.x = Math.random() * Math.PI;
+      mesh.rotation.y = Math.random() * Math.PI;
+      var scale = 0.5 + Math.random() * 0.55;
+      mesh.scale.set(scale, scale, scale);
+      scene.add(mesh);
+      shapes.push({
+        mesh: mesh,
+        rx: (Math.random() - 0.5) * 0.008,
+        ry: (Math.random() - 0.5) * 0.008,
+        bobSpeed: 0.3 + Math.random() * 0.6,
+        bobAmp: 0.25 + Math.random() * 0.45,
+        basePos: mesh.position.clone(),
+        phase: Math.random() * Math.PI * 2
+      });
+    }
+
+    // Mouse parallax (smoothed)
+    var mouseX = 0, mouseY = 0, tX = 0, tY = 0;
+    function onMouse(e) {
+      mouseX = (e.clientX / window.innerWidth - 0.5);
+      mouseY = (e.clientY / window.innerHeight - 0.5);
+    }
+    window.addEventListener('mousemove', onMouse, { passive: true });
+
+    // Touch parallax
+    window.addEventListener('touchmove', function(e) {
+      if (!e.touches || !e.touches[0]) return;
+      onMouse(e.touches[0]);
+    }, { passive: true });
+
+    // Resize
+    function handleResize() {
+      width = parent.clientWidth;
+      height = parent.clientHeight;
+      if (width === 0 || height === 0) return;
+      renderer.setSize(width, height, false);
+      camera.aspect = width / height;
+      camera.updateProjectionMatrix();
+    }
+    window.addEventListener('resize', handleResize);
+
+    // Pause when hero is off-screen
+    var heroVisible = true;
+    var heroEl = document.querySelector('.hero');
+    if ('IntersectionObserver' in window && heroEl) {
+      var io = new IntersectionObserver(function(entries) {
+        entries.forEach(function(e) { heroVisible = e.isIntersecting; });
+      }, { threshold: 0.05 });
+      io.observe(heroEl);
+    }
+
+    // Show canvas fade-in
+    canvas.classList.add('loaded');
+
+    var t0 = performance.now();
+    function animate(now) {
+      requestAnimationFrame(animate);
+      if (!heroVisible || document.hidden) return;
+      var t = (now - t0) * 0.001;
+      for (var i = 0; i < shapes.length; i++) {
+        var s = shapes[i];
+        s.mesh.rotation.x += s.rx;
+        s.mesh.rotation.y += s.ry;
+        s.mesh.position.y = s.basePos.y + Math.sin(t * s.bobSpeed + s.phase) * s.bobAmp;
+        s.mesh.position.x = s.basePos.x + Math.cos(t * s.bobSpeed * 0.7 + s.phase) * s.bobAmp * 0.3;
+      }
+      tX += (mouseX * 0.9 - tX) * 0.04;
+      tY += (mouseY * 0.55 - tY) * 0.04;
+      camera.position.x = tX;
+      camera.position.y = -tY;
+      camera.lookAt(0, 0, 0);
+      renderer.render(scene, camera);
+    }
+    requestAnimationFrame(animate);
   }
 
-  // ---------------- Mobile menu ----------------
-  var toggle = document.getElementById('menuToggle');
-  var menu = document.getElementById('mobileMenu');
-  if (toggle && menu) {
+  // ====================== 3D TILT ON CARDS ======================
+  function initTilt() {
+    if (!hoverCapable || reducedMotion) return;
+    document.querySelectorAll('[data-tilt]').forEach(function(el) {
+      var raf = null;
+      var maxTilt = el.classList.contains('bento-card') ? 10 : 8;
+
+      function handleMove(e) {
+        var rect = el.getBoundingClientRect();
+        var x = (e.clientX - rect.left) / rect.width;
+        var y = (e.clientY - rect.top) / rect.height;
+        var rotY = (x - 0.5) * maxTilt * 2;
+        var rotX = (y - 0.5) * -maxTilt * 2;
+        if (raf) cancelAnimationFrame(raf);
+        raf = requestAnimationFrame(function() {
+          el.style.setProperty('--rx', rotX.toFixed(2) + 'deg');
+          el.style.setProperty('--ry', rotY.toFixed(2) + 'deg');
+        });
+      }
+      function handleLeave() {
+        if (raf) cancelAnimationFrame(raf);
+        el.style.setProperty('--rx', '0deg');
+        el.style.setProperty('--ry', '0deg');
+      }
+      el.addEventListener('mousemove', handleMove);
+      el.addEventListener('mouseleave', handleLeave);
+      el.addEventListener('blur', handleLeave);
+    });
+  }
+
+  // ====================== SCROLL REVEAL ======================
+  function initReveal() {
+    var els = document.querySelectorAll('.reveal');
+    if ('IntersectionObserver' in window) {
+      els.forEach(function(el) { el.style.animation = 'none'; });
+      var observer = new IntersectionObserver(function(entries) {
+        entries.forEach(function(entry) {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('visible');
+            observer.unobserve(entry.target);
+          }
+        });
+      }, { threshold: 0.12 });
+      els.forEach(function(el) { observer.observe(el); });
+    }
+  }
+
+  // ====================== MOBILE MENU ======================
+  function initMobileMenu() {
+    var toggle = document.getElementById('menuToggle');
+    var menu = document.getElementById('mobileMenu');
+    if (!toggle || !menu) return;
     toggle.addEventListener('click', function() {
       var open = menu.classList.toggle('open');
       toggle.setAttribute('aria-expanded', open ? 'true' : 'false');
@@ -960,58 +1219,80 @@
     });
   }
 
-  // ---------------- Bento keyboard access ----------------
-  document.querySelectorAll('.bento-card[tabindex="0"]').forEach(function(card) {
-    card.addEventListener('keydown', function(e) {
-      if (e.key === 'Enter' || e.key === ' ') {
-        e.preventDefault();
-      }
+  // ====================== BENTO KEYBOARD ======================
+  function initBentoKeyboard() {
+    document.querySelectorAll('.bento-card[tabindex="0"]').forEach(function(card) {
+      card.addEventListener('keydown', function(e) {
+        if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); }
+      });
     });
-  });
-
-  // ---------------- Contact form (secure, client-side demo) ----------------
-  var form = document.getElementById('contactForm');
-  if (!form) return;
-  var statusEl = document.getElementById('cf-status');
-  var submitBtn = document.getElementById('cf-submit');
-  var lastSubmit = 0;
-  var EMAIL_RE = /^[A-Za-z0-9._%+-]{1,64}@[A-Za-z0-9.-]{1,253}\.[A-Za-z]{2,24}$/;
-
-  function setStatus(msg, kind) {
-    statusEl.textContent = msg;
-    statusEl.className = 'form-status' + (kind ? ' ' + kind : '');
   }
 
-  form.addEventListener('submit', function(e) {
-    e.preventDefault();
-    var now = Date.now();
-    if (now - lastSubmit < 5000) { setStatus('Please wait a moment before trying again.', 'error'); return; }
-    var trap = form.elements['website'];
-    if (trap && trap.value) { setStatus('Submission blocked.', 'error'); return; }
+  // ====================== CONTACT FORM (secure demo) ======================
+  function initForm() {
+    var form = document.getElementById('contactForm');
+    if (!form) return;
+    var statusEl = document.getElementById('cf-status');
+    var submitBtn = document.getElementById('cf-submit');
+    var lastSubmit = 0;
+    var EMAIL_RE = /^[A-Za-z0-9._%+-]{1,64}@[A-Za-z0-9.-]{1,253}\.[A-Za-z]{2,24}$/;
 
-    var name = String(form.elements['name'].value || '').trim();
-    var email = String(form.elements['email'].value || '').trim();
-    var message = String(form.elements['message'].value || '').trim();
+    function setStatus(msg, kind) {
+      statusEl.textContent = msg;
+      statusEl.className = 'form-status' + (kind ? ' ' + kind : '');
+    }
 
-    if (name.length < 2 || name.length > 80) { setStatus('Please enter your name (2–80 characters).', 'error'); return; }
-    if (!EMAIL_RE.test(email)) { setStatus('Please enter a valid email address.', 'error'); return; }
-    if (message.length < 10 || message.length > 2000) { setStatus('Please write a message between 10 and 2000 characters.', 'error'); return; }
+    form.addEventListener('submit', function(e) {
+      e.preventDefault();
+      var now = Date.now();
+      if (now - lastSubmit < 5000) { setStatus('Please wait a moment before trying again.', 'error'); return; }
+      var trap = form.elements['website'];
+      if (trap && trap.value) { setStatus('Submission blocked.', 'error'); return; }
 
-    lastSubmit = now;
-    submitBtn.disabled = true;
-    submitBtn.textContent = 'Sending…';
-    setStatus('');
+      var name = String(form.elements['name'].value || '').trim();
+      var email = String(form.elements['email'].value || '').trim();
+      var message = String(form.elements['message'].value || '').trim();
 
-    setTimeout(function() {
-      submitBtn.textContent = 'Sent ✨';
-      setStatus('Thanks! I\'ll get back to you within 2 business days.', 'success');
-      form.reset();
+      if (name.length < 2 || name.length > 80) { setStatus('Please enter your name (2–80 characters).', 'error'); return; }
+      if (!EMAIL_RE.test(email)) { setStatus('Please enter a valid email address.', 'error'); return; }
+      if (message.length < 10 || message.length > 2000) { setStatus('Please write a message between 10 and 2000 characters.', 'error'); return; }
+
+      lastSubmit = now;
+      submitBtn.disabled = true;
+      submitBtn.textContent = 'Sending…';
+      setStatus('');
+
       setTimeout(function() {
-        submitBtn.disabled = false;
-        submitBtn.textContent = 'Send message';
-      }, 2500);
-    }, 700);
-  });
+        submitBtn.textContent = 'Sent ✨';
+        setStatus('Thanks! I\'ll get back to you within 2 business days.', 'success');
+        form.reset();
+        setTimeout(function() {
+          submitBtn.disabled = false;
+          submitBtn.textContent = 'Send message';
+        }, 2500);
+      }, 700);
+    });
+  }
+
+  // ====================== BOOT ======================
+  function boot() {
+    initReveal();
+    initMobileMenu();
+    initBentoKeyboard();
+    initForm();
+    if (!reducedMotion) {
+      initTilt();
+      // initHeroScene waits for Three.js — it's loaded synchronously above this script,
+      // so THREE should already exist.
+      initHeroScene();
+    }
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', boot);
+  } else {
+    boot();
+  }
 })();
 </script>
 
